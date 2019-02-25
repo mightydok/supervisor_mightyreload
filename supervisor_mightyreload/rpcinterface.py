@@ -4,7 +4,7 @@ from supervisor.states import SupervisorStates
 from supervisor.xmlrpc import Faults as SupervisorFaults
 from supervisor.xmlrpc import RPCError
 from supervisor.options import UnhosedConfigParser
-from mightyreload.contrib import Faults
+from supervisor_mightyreload.contrib import Faults
 import supervisor.loggers
 import json
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from supervisor.supervisorctl import ControllerPluginBase
 from supervisor import xmlrpc
-from mightyreload.contrib import LSBInitExitStatuses
+from supervisor_mightyreload.contrib import LSBInitExitStatuses
 import xmlrpclib
 import json
 
