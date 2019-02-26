@@ -24,7 +24,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='supervisor-mightyreload',
-    version='1.0',
+    version='1.2',
     description='Adds mightyerload command to Supervisor.',
     author='Vitaliy Okulov',
     author_email='vitaliy.okulov@gmail.com',
