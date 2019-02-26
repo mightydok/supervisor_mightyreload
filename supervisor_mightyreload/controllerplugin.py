@@ -9,13 +9,10 @@ import json
 class MightyReloadControllerPlugin(ControllerPluginBase):
     name = 'mightyreload'
 
-    def __init__(self, controller, **config):
+    def __init__(self, controller):
         self.ctl = controller
         self.supervisor = controller.get_server_proxy('supervisor')
         self.mightyreload = controller.get_server_proxy('mightyreload')
-
-    def _grace_reload(self):
-        self.ctl.output("123")
 
     def do_mightyreload(self, arg):
         def log(name, message):
@@ -72,7 +69,7 @@ class MightyReloadControllerPlugin(ControllerPluginBase):
                         self.ctl.output(process + ' stoped')
                     for process in result['processes_name']:
                         process_name = process.split(':')[1]
-                        self.mightyreload.removeProcessFromGroup(groupName, process_name)
+                        self.mightyreload.removeProcessFromGroup(gname, process_name)
                         self.ctl.output(process + ' removed')
                 elif result['type'] == 'add':
                     for process_name in result['processes_name']:
