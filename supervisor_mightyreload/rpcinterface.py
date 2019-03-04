@@ -5,15 +5,21 @@ from supervisor.xmlrpc import Faults as SupervisorFaults
 from supervisor.xmlrpc import RPCError
 from supervisor.options import UnhosedConfigParser
 from supervisor_mightyreload.contrib import Faults
+
 import supervisor.loggers
 import json
+import time
+import pdb
 
 class MightyReloadNamespaceRPCInterface:
-    API_VERSION = '1.0'
+    API_VERSION = '1.3'
+    lastdeploytime = 0
 
     def __init__(self, supervisord, whitelist=[]):
         self.supervisord = supervisord
         self._whitelist = list_of_strings(whitelist)
+        # lets save time settings
+        self.starttime = int(time.time())
 
     def _update(self, func_name):
         self.update_text = func_name
@@ -85,6 +91,7 @@ class MightyReloadNamespaceRPCInterface:
         return True
 
     def UpdateNumprocs(self, group_name):
+        self._update('UpdateNumprocs')
         try:
             self.supervisord.options.process_config(do_usage=False)
         except ValueError as msg:
@@ -176,6 +183,7 @@ class MightyReloadNamespaceRPCInterface:
 
 
     def removeProcessFromGroup(self, group_name, process_name):
+        self._update('removeProcessFromGroup')
         group = self._getProcessGroup(group_name)
 
         # check process exists and is running
@@ -213,6 +221,16 @@ class MightyReloadNamespaceRPCInterface:
             raise RPCError(SupervisorFaults.INCORRECT_PARAMETERS)
         return config
 
+    # return last all daemons restart time or module start time
+    # if supervisord just started
+    def GetLastDeployTime(self):
+        self._update('GetLastRestartTime')
+        return MightyReloadNamespaceRPCInterface.lastdeploytime or self.starttime
+
+    def SetLastDeployTime(self):
+        self._update('SetLastDeployTime')
+        MightyReloadNamespaceRPCInterface.lastdeploytime = int(time.time())
+        return MightyReloadNamespaceRPCInterface.lastdeploytime
 
 def make_mightyreload_rpcinterface(supervisord, **config):
     return MightyReloadNamespaceRPCInterface(supervisord, **config)

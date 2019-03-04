@@ -91,8 +91,15 @@ class MightyReloadControllerPlugin(ControllerPluginBase):
             supervisor.addProcessGroup(gname)
             log(gname, "added process group")
 
+    def do_mightysetdeploytime(self, arg):
+        results = self.mightyreload.SetLastDeployTime()
+        self.ctl.output("Deploy time set to: %s" % results)
+
     def help_mightyreload(self):
         self.ctl.output("mightyreload\t\tRestart all processes")
+
+    def help_mightysetdeploytime(self):
+        self.ctl.output("mightysetdeploytime\t\tSet global deploy time for monitoring")
 
 def make_mightyreload_controllerplugin(controller, **config):
     return MightyReloadControllerPlugin(controller, **config)
