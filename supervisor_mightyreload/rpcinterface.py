@@ -9,11 +9,9 @@ from supervisor_mightyreload.contrib import Faults
 import supervisor.loggers
 import json
 import time
-import pdb
 
 class MightyReloadNamespaceRPCInterface:
-    API_VERSION = '1.3'
-    lastdeploytime = 0
+    API_VERSION = '1.4'
 
     def __init__(self, supervisord, whitelist=[]):
         self.supervisord = supervisord
@@ -220,17 +218,6 @@ class MightyReloadNamespaceRPCInterface:
         except (TypeError, ValueError):
             raise RPCError(SupervisorFaults.INCORRECT_PARAMETERS)
         return config
-
-    # return last all daemons restart time or module start time
-    # if supervisord just started
-    def GetLastDeployTime(self):
-        self._update('GetLastRestartTime')
-        return MightyReloadNamespaceRPCInterface.lastdeploytime or self.starttime
-
-    def SetLastDeployTime(self):
-        self._update('SetLastDeployTime')
-        MightyReloadNamespaceRPCInterface.lastdeploytime = int(time.time())
-        return MightyReloadNamespaceRPCInterface.lastdeploytime
 
 def make_mightyreload_rpcinterface(supervisord, **config):
     return MightyReloadNamespaceRPCInterface(supervisord, **config)
