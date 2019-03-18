@@ -2,11 +2,9 @@
 from supervisor.supervisorctl import ControllerPluginBase
 from supervisor import xmlrpc
 from supervisor_mightyreload.contrib import LSBInitExitStatuses
-from threading import Thread
 
 import xmlrpclib
 import json
-import fnmatch
 
 
 class MightyReloadControllerPlugin(ControllerPluginBase):
